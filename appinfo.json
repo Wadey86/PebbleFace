@@ -1,0 +1,24 @@
+{
+    "versionLabel": "0.2.1",
+    "uuid": "1c300400-6e09-4f07-b0d8-18b9663c9cf3",
+    "appKeys": {},
+    "longName": "Test02",
+    "versionCode": 1,
+    "capabilities": [
+        ""
+    ],
+    "shortName": "Test02",
+    "companyName": "wadey86",
+    "watchapp": {
+        "watchface": true
+    },
+    "resources": {
+        "media": [
+            {
+                "type": "png",
+                "name": "WATCHFACE",
+                "file": "images/face.png"
+            }
+        ]
+    }
+}

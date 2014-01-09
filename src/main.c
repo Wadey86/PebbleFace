@@ -1,15 +1,17 @@
 #include <pebble.h>
 	
 Window *window;
-TextLayer *text_layer, *bt_layer, *brand_layer, *batt_layer;
-char buffer[] = "00:00", batt_pc[] = "000";
+TextLayer *text_layer, *bt_layer, *brand_layer, *batt_layer, *date_layer;
+char buffer[] = "00:00", batt_pc[] = "000%", date_buffer[] = "00";
 //char charge_status;
 GBitmap *face_bitmap;
 BitmapLayer *face_layer;
 
 void tick_handler(struct tm *tick_time, TimeUnits units_changed){
 	strftime(buffer, sizeof("00:00"), "%H:%M", tick_time);
+	strftime(date_buffer, sizeof("00"), "%d", tick_time);
 	text_layer_set_text(text_layer, buffer);
+	text_layer_set_text(date_layer, date_buffer);
 }
 
 void bt_handler(){
@@ -44,6 +46,14 @@ void window_load(Window *window){
 	text_layer_set_font(text_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD));
 	layer_add_child(window_get_root_layer(window), (Layer*) text_layer);
 	
+	//create text layer for date
+	date_layer = text_layer_create(GRect(116, 76, 25, 50));
+	text_layer_set_background_color(date_layer, GColorClear);
+	text_layer_set_text_color(date_layer, GColorWhite);
+	text_layer_set_text_alignment(date_layer, GTextAlignmentCenter);
+	text_layer_set_font(date_layer, fonts_get_system_font(FONT_KEY_GOTHIC_14_BOLD));
+	layer_add_child(window_get_root_layer(window), (Layer*) date_layer);
+	
 	//time struct to display time on load
 	struct tm *t;
 	time_t temp;
@@ -74,7 +84,7 @@ void window_load(Window *window){
 	layer_add_child(window_get_root_layer(window), (Layer*) brand_layer);
 	
 	//create text layer for pebble battery status
-	batt_layer = text_layer_create(GRect(116, 76, 25, 50));
+	batt_layer = text_layer_create(GRect(5, 76, 20, 50));
 	text_layer_set_background_color(batt_layer, GColorClear);
 	text_layer_set_text_color(batt_layer, GColorWhite);
 	text_layer_set_text_alignment(batt_layer, GTextAlignmentCenter);
@@ -90,6 +100,7 @@ void window_unload(Window *window){
 	text_layer_destroy(bt_layer);
 	text_layer_destroy(brand_layer);
 	text_layer_destroy(batt_layer);
+	text_layer_destroy(date_layer);
 	gbitmap_destroy(face_bitmap);
 	bitmap_layer_destroy(face_layer);
 }
